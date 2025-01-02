@@ -65,10 +65,14 @@ dotenv.config();
 
 const app = express();
 
-// Allow requests from specific origins
-const allowedOrigins = [
-    'https://form-builder-app-frontend-iota.vercel.app'
-];
+// const allowedOrigins = [
+//     'https://form-builder-app-frontend-iota.vercel.app'
+// ];
+const allowedOrigins = ['https://form-builder-app-frontend-iota.vercel.app']; // Specific origin
+app.use(cors({
+    origin: allowedOrigins,
+    credentials: true
+}));
 
 const corsOptions = {
     origin: function (origin, callback) {
@@ -84,9 +88,8 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.options("*", cors(corsOptions)); // Handle OPTIONS preflight requests
+app.options("*", cors(corsOptions)); 
 
-// Connect to the database
 mongoose.connect(process.env.MONGO_URL)
   .then(() => console.log('Database Connected'))
   .catch((err) => console.log('Database not connected', err));
@@ -95,7 +98,6 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 
-// Auth routes
 app.use('/', require('./routes/authRoutes'));
 
 const port = 8000;
