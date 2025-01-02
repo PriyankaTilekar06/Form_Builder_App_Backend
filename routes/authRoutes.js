@@ -7,7 +7,7 @@ router.use(
     cors({
         credentials: true,
         // origin: 'http://localhost:5173'
-        origin: 'https://form-builder-app-frontend-iota.vercel.app/'
+        origin: 'https://form-builder-app-frontend-iota.vercel.app'
     })
 )
 
