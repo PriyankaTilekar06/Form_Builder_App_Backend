@@ -1,52 +1,104 @@
-const express = require("express")
-const dotenv = require("dotenv")
-const cors = require("cors")
-const {mongoose} = require("mongoose")
-const cookieParser = require("cookie-parser")
-const app = express()
+// const express = require("express")
+// const dotenv = require("dotenv")
+// const cors = require("cors")
+// const {mongoose} = require("mongoose")
+// const cookieParser = require("cookie-parser")
+// const app = express()
+
+// dotenv.config();
+
+// // app.use(cors({
+// //     credentials: true,
+// //     origin: 'http://localhost:5173'
+// // }));
+
+
+// // mongoose.connect(process.env.MONGO_URL)
+// // .then(() => console.log("Database Connected"))
+// // .catch((err) => console.log("Database not Connected", err))
+
+// mongoose.connect(process.env.MONGO_URL)
+//   .then(() => console.log('Database Connected'))
+//   .catch((err) => console.log('Database not connected', err));
+// const allowedOrigins = [
+//   'https://form-builder-app-frontend-iota.vercel.app'
+// ];
+
+// const corsOptions = {
+//   origin: function (origin, callback) {
+//     if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error('Not allowed by CORS'));
+//     }
+//   },
+//   credentials: true, 
+//   allowedHeaders: ["Content-Type", "Authorization", "Accept", "x-csrf-token", "X-Requested-With"],
+//   methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
+// };
+
+// app.use(cors(corsOptions));
+// app.options("*", cors(corsOptions)); 
+
+// app.use(express.json())
+// app.use(cookieParser())
+// app.use(express.urlencoded({extended: false}))
+
+// app.use('/', require('./routes/authRoutes'))
+
+// const port = 8000
+// app.listen(port, () => {
+//     console.log(`Server is running on port ${port}`)
+// })
+
+
+
+
+
+const express = require("express");
+const cors = require("cors");
+const dotenv = require("dotenv");
+const { mongoose } = require("mongoose");
+const cookieParser = require("cookie-parser");
 
 dotenv.config();
 
-// app.use(cors({
-//     credentials: true,
-//     origin: 'http://localhost:5173'
-// }));
+const app = express();
 
-
-// mongoose.connect(process.env.MONGO_URL)
-// .then(() => console.log("Database Connected"))
-// .catch((err) => console.log("Database not Connected", err))
-
-mongoose.connect(process.env.MONGO_URL)
-  .then(() => console.log('Database Connected'))
-  .catch((err) => console.log('Database not connected', err));
+// Allow requests from specific origins
 const allowedOrigins = [
-  'https://form-builder-app-frontend-iota.vercel.app'
+    'https://form-builder-app-frontend-iota.vercel.app'
 ];
 
 const corsOptions = {
-  origin: function (origin, callback) {
-    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true, 
-  allowedHeaders: ["Content-Type", "Authorization", "Accept", "x-csrf-token", "X-Requested-With"],
-  methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
+    origin: function (origin, callback) {
+        if (allowedOrigins.includes(origin) || !origin) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization", "Accept", "x-csrf-token", "X-Requested-With"],
+    methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
 };
 
 app.use(cors(corsOptions));
-app.options("*", cors(corsOptions)); 
+app.options("*", cors(corsOptions)); // Handle OPTIONS preflight requests
 
-app.use(express.json())
-app.use(cookieParser())
-app.use(express.urlencoded({extended: false}))
+// Connect to the database
+mongoose.connect(process.env.MONGO_URL)
+  .then(() => console.log('Database Connected'))
+  .catch((err) => console.log('Database not connected', err));
 
-app.use('/', require('./routes/authRoutes'))
+app.use(express.json());
+app.use(cookieParser());
+app.use(express.urlencoded({ extended: false }));
 
-const port = 8000
+// Auth routes
+app.use('/', require('./routes/authRoutes'));
+
+const port = 8000;
 app.listen(port, () => {
-    console.log(`Server is running on port ${port}`)
-})
+    console.log(`Server is running on port ${port}`);
+});
