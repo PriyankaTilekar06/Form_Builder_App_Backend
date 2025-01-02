@@ -68,7 +68,8 @@ const app = express();
 // const allowedOrigins = [
 //     'https://form-builder-app-frontend-iota.vercel.app'
 // ];
-const allowedOrigins = ['https://form-builder-app-frontend-two.vercel.app']; // Specific origin
+const allowedOrigins = ['https://form-builder-app-frontend-two.vercel.app']
+// const allowedOrigins = 'http://localhost:5173'
 app.use(cors({
     origin: allowedOrigins,
     credentials: true

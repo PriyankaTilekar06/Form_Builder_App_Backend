@@ -29,7 +29,7 @@ const { test, registerUser, loginUser, getProfile } = require('../controllers/au
 router.use(
     cors({
         credentials: true,
-        origin: 'https://form-builder-app-frontend-iota.vercel.app'
+        origin: 'https://form-builder-app-frontend-two.vercel.app'
     })
 );
 
