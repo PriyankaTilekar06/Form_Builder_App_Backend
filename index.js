@@ -68,7 +68,7 @@ const app = express();
 // const allowedOrigins = [
 //     'https://form-builder-app-frontend-iota.vercel.app'
 // ];
-const allowedOrigins = ['https://form-builder-app-frontend-iota.vercel.app']; // Specific origin
+const allowedOrigins = ['https://form-builder-app-frontend-two.vercel.app']; // Specific origin
 app.use(cors({
     origin: allowedOrigins,
     credentials: true
