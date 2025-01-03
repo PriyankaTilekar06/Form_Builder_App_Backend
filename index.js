@@ -7,69 +7,31 @@ const authRoutes = require("./routes/authRoutes");
 dotenv.config();
 const port = process.env.PORT || 8000;
 
-// const allowedOrigins = [
-//   process.env.FRONTEND_URL,
-//   // 'http://localhost:5173'
-// ];
-
-// const corsOptions = {
-//   origin: function (origin, callback) {
-//     if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-//       callback(null, true);
-//     } else {
-//       callback(new Error("Not allowed by CORS"));
-//     }
-//   },
-//   credentials: true,
-//   allowedHeaders: [
-//     "Content-Type",
-//     "Authorization",
-//     "Accept",
-//     "x-csrf-token",
-//     "X-Requested-With",
-//   ],
-//   methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
-// };
-
-// app.use(cors(corsOptions));
-// app.options("*", cors(corsOptions));
 const corsOptions = {
   origin: process.env.FRONTEND_URL,
   credentials: true,
-  // allowedHeaders: ["Content-Type", "Accept", "x-csrf-token", "X-Requested-With"],
   methods: ["GET", "POST", "PATCH", "PUT", "DELETE","OPTIONS"],
 };
 
 app.use(cors(corsOptions));
 
-app.options("*", cors(corsOptions)); // Handle preflight requests
+app.options("*", cors(corsOptions)); 
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/v1/auth", authRoutes);
 
-// app.get("/", (req, res) => {
-//   try {
-//     res.status(200).send({ message: "Hello World!" });
-//   } catch (error) {
-//     res.status(500).send({ error: error.message });
-//   }
-// });
-
-// Setting up a basic route for the root URL
 app.get("/", (req, res) => {
   try {
-    res.status(200).send({message:"Hello World!"}); // Responding with a simple message
+    res.status(200).send({message:"Hello World!"}); 
   } catch (error) {
     res.status(500).send({ error: error.message });
   }
 });
 
-// Test route for database connection
 app.get('/test-db-connection', async (req, res) => {
   try {
-      // Check if already connected to avoid multiple connections
       if (mongoose.connection.readyState === 1) {
           return res.status(200).json({message:"Already connected to MongoDB!"});
       }

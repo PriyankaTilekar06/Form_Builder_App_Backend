@@ -69,6 +69,34 @@ const loginUser = async (req, res) => {
     }
 }
 
+const editUserById = async (req, res) => {
+    try {
+        const { name, email, password, new_password, _id } = req.body;
+        
+        const user = await UserModel.findById(_id);
+        if (!user) {
+            return res.send({ error: "User not found" });
+        }
+        // Check if the user wants to update their password
+        if (password && new_password) {
+            const comparePass = await comparePassword(password, user.password);
+            if (!comparePass) {
+                return res.send({ error: "Password incorrect"});
+            }
+            const hashedNewPassword = await hashPassword(new_password);
+            user.password = hashedNewPassword; // Update password
+        }
+        // Update user details
+        user.name = name || user.name;
+        user.email = email || user.email;
+        await user.save();
+        res.send({ message: "User Updated", user });
+    } catch (error) {
+        // Handle server error
+        res.send({ error: error.message });
+    }
+};
+
 // const getProfile = (req, res) => {
 //     const {token} = req.cookies
 //     if(token){
@@ -84,7 +112,8 @@ const loginUser = async (req, res) => {
 module.exports = {
     test,
     registerUser,
-    loginUser
+    loginUser,
+    editUserById
 }
 
 
