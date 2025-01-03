@@ -98,21 +98,23 @@ mongoose.connect(process.env.MONGO_URL)
 
 const allowedOrigins = ['https://form-builder-app-frontend-two.vercel.app'];
 
-const corsOptions = {
-    origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
-    credentials: true, // Allow cookies and credentials
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-};
+app.use(
+    cors({
+        origin: (origin, callback) => {
+            if (!origin || allowedOrigins.includes(origin)) {
+                callback(null, true);
+            } else {
+                callback(new Error('Not allowed by CORS'));
+            }
+        },
+        credentials: true, // Allow cookies and Authorization headers
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allowed HTTP methods
+        allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
+    })
+);
 
-app.use(cors(corsOptions));
-app.options('*', cors(corsOptions));
+// Handle preflight requests for all routes
+app.options('*', cors());
 
 app.use('/', require('./routes/authRoutes'));
 
