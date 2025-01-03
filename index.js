@@ -2,7 +2,7 @@ const express = require("express")
 const dotenv = require("dotenv")
 const cors = require("cors")
 const {mongoose} = require("mongoose")
-const cookieParser = require("cookie-parser")
+// const cookieParser = require("cookie-parser")
 const app = express()
 const authRoutes = require('./routes/authRoutes')
 dotenv.config();
@@ -30,7 +30,7 @@ app.use(cors(corsOptions));
 app.options("*", cors(corsOptions)); 
 
 app.use(express.json())
-app.use(cookieParser())
+// app.use(cookieParser())
 app.use(express.urlencoded({extended: false}))
 
 
