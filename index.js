@@ -68,32 +68,29 @@ const app = express();
 // const allowedOrigins = [
 //     'https://form-builder-app-frontend-iota.vercel.app'
 // ];
-const allowedOrigins = ['https://form-builder-app-frontend-two.vercel.app']
-// const allowedOrigins = 'http://localhost:5173'
-app.use(cors({
-    origin: allowedOrigins,
-    credentials: true
-}));
+// const allowedOrigins = ['https://form-builder-app-frontend-two.vercel.app']
+mongoose.connect(process.env.MONGO_URL)
+  .then(() => console.log('Database Connected'))
+  .catch((err) => console.log('Database not connected', err));
+const allowedOrigins = [
+  'https://form-builder-app-frontend-two.vercel.app'
+];
 
 const corsOptions = {
-    origin: function (origin, callback) {
-        if (allowedOrigins.includes(origin) || !origin) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
-    credentials: true,
-    allowedHeaders: ["Content-Type", "Authorization", "Accept", "x-csrf-token", "X-Requested-With"],
-    methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
+  origin: function (origin, callback) {
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true, 
+  allowedHeaders: ["Content-Type", "Authorization", "Accept", "x-csrf-token", "X-Requested-With"],
+  methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
 };
 
 app.use(cors(corsOptions));
 app.options("*", cors(corsOptions)); 
-
-mongoose.connect(process.env.MONGO_URL)
-  .then(() => console.log('Database Connected'))
-  .catch((err) => console.log('Database not connected', err));
 
 app.use(express.json());
 app.use(cookieParser());
