@@ -9,7 +9,8 @@ const authRoutes = require('./routes/authRoutes')
 dotenv.config();
 
 const allowedOrigins = [
-process.env.FRONTEND_URL
+process.env.FRONTEND_URL,
+'https://form-builder-app-frontend-two.vercel.app'
 // 'http://localhost:5173'
 ];
 
