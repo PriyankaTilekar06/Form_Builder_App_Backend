@@ -45,7 +45,9 @@ app.use(express.urlencoded({extended: false}))
 //   });
   
 
-app.use('/', authRoutes)
+app.use('/api/v1/auth', authRoutes)
+
+
 
 mongoose.connect(process.env.MONGO_URL)
   .then(() => console.log('Database Connected'))
